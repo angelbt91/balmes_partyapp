@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/postmessage', 'MessagesController@PostMessage');
 Route::get('/getmessages', 'MessagesController@GetMessages');
+Route::put('/updatemessage', 'MessagesController@UpdateMessage');
