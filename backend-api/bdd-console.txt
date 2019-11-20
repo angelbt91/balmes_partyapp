@@ -1,0 +1,19 @@
+DROP TABLE IF EXISTS messages;
+
+
+CREATE TABLE messages (
+                          id integer not null primary key auto_increment,
+                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+                          name varchar(255),
+                          message varchar(255),
+                          image LONGBLOB,
+                          showing BOOL not null default 1
+);
+
+
+/* para poder poner emojis */
+ALTER TABLE messages CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+
+
+SELECT * FROM messages;

@@ -20,54 +20,53 @@ function Submit() {
         message: message,
         image: image
     };
+    const toastOptions = {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true
+    };
 
     // metodo para leer la imagen
-    const uploadImage = async () => {
+    const prepareUpload = async () => {
+
         // si no hay ni mensaje ni imagen, devolvemos error
         if (data['message'] === "" && data['image'] === "") {
-            toast.warn('Please write a message, attach a photo... Or both!', {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true
-            });
+            toast.warn('Please write a message, attach a photo... Or both!', toastOptions);
             setDisabled(false);
             return;
         }
 
-        // si no hay imagen, saltamos directamente a enviar mensaje
+        // avisamos de que procedemos a enviar el mensaje
+        toast.info('Sending message...', toastOptions);
+
+        // si no hay imagen, saltamos directamente a enviar mensaje sin ella
         if (data.image === "") {
             uploadMessage();
             return;
         }
 
-        // si todo bien, cargamos el filereader
+        // si hay imagen, convertimos el archivo a base64 con el filereader
         let reader = new FileReader();
 
         reader.onload = () => {
             data["image"] = reader.result;
-            console.log(data.image);
             publishImage();
-        }
+        };
 
         reader.onerror = () => {
-            toast.error('Error reading the image. Please retry.', {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true
-            });
-        }
+            toast.error('Error reading the image. Please retry.', toastOptions);
+            setDisabled(false);
+        };
 
         reader.readAsDataURL(data["image"]);
 
     };
 
-    // método para hacer el post de imagen
+
+    // método para hacer el post de imagen a Cloudinary y recuperar la URL remota
     const publishImage = async () => {
 
         // bases para hacer el fetch
@@ -87,16 +86,6 @@ function Submit() {
             mode: 'cors'
         };
 
-        // avisamos de que vamos a subir la imagen
-        toast.info('Uploading image...', {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true
-        });
-
         fetch(url, options)
             .then(response => {
                 if (response.ok) {
@@ -107,26 +96,11 @@ function Submit() {
                 }
             })
             .then(response => {
-                toast.success('Image uploaded!', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true
-                });
                 data.image = response["eager"][0]["url"];
                 uploadMessage();
             })
             .catch(error => {
-                toast.error('Image could not be sent. Please retry.', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true
-                });
+                toast.error('Image could not be uploaded. Please retry.', toastOptions);
                 setDisabled(false);
                 console.log("Error al publicar imagen. Error número " + error.status + ". Contenido de la request: \n" + options.body);
                 return Promise.reject(error.status);
@@ -134,7 +108,7 @@ function Submit() {
     };
 
 
-// subir mensaje
+    // y finalmente, subir el mensaje
     const uploadMessage = async () => {
 
         // subida del mensaje
@@ -149,17 +123,11 @@ function Submit() {
             }),
             mode: 'cors'
         };
+
         return fetch(url, options)
             .then(response => {
                 if (response.status === 200) {
-                    toast.success('Message succesfully sent!', {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true
-                    });
+                    toast.success('Message succesfully sent!', toastOptions);
                     setDisabled(false);
 
                     // vaciamos el nombre
@@ -181,16 +149,9 @@ function Submit() {
                     return Promise.reject(response.status);
                 }
             }).catch(error => {
-                console.log("Error al subir el mensaje. Error número " + error.status + ".\n\n" + error.body);
-                toast.error('Message could not be sent. Please retry.', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true
-                });
+                toast.error('Message could not be sent. Please retry.', toastOptions);
                 setDisabled(false);
+                console.log("Error al subir el mensaje. Error número " + error.status + ".\n\n" + error.body);
             });
     };
 
@@ -241,19 +202,6 @@ function Submit() {
                         setMessage(e.target.value)
                     }}
                 />
-                <div className="d-flex justify-content-end w-100 mt-2">
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        endIcon={<SendIcon/>}
-                        disabled={disabled}
-                        onClick={() => {
-                            setDisabled(true);
-                            uploadImage();
-                        }}>
-                        Send to the TV
-                    </Button>
-                </div>
                 <input
                     id="imageField"
                     type="file"
@@ -262,6 +210,19 @@ function Submit() {
                         setImage(e.target.files[0]);
                     }}
                 />
+                <div className="d-flex justify-content-end w-100 mt-2">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        endIcon={<SendIcon/>}
+                        disabled={disabled}
+                        onClick={() => {
+                            setDisabled(true);
+                            prepareUpload();
+                        }}>
+                        Send to the TV
+                    </Button>
+                </div>
             </div>
         </div>
     );
