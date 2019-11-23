@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import './bootstrap.min.css';
+import '../bootstrap.min.css';
+import './submit.css';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -7,7 +8,6 @@ import SendIcon from '@material-ui/icons/Send';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 function Submit() {
 
@@ -57,7 +57,7 @@ function Submit() {
         };
 
         reader.onerror = () => {
-            toast.error('Error reading the image. Please retry.', toastOptions);
+            toast.error('Error reading the media. Please retry.', toastOptions);
             setDisabled(false);
         };
 
@@ -157,6 +157,8 @@ function Submit() {
 
 
     return (
+
+
         <div className="container">
 
             <ToastContainer
@@ -172,7 +174,7 @@ function Submit() {
             />
 
             <div className="row m-1">
-                <h1>Balmes' New Year's Party Message-to-TV App</h1>
+                <h1>Balmes' New Year's App</h1>
                 <Grid container spacing={1} alignItems="flex-end">
                     <Grid item>
                         <AccountCircle/>
@@ -180,16 +182,18 @@ function Submit() {
                     <Grid item>
                         <TextField
                             id="nameField"
-                            label="Write here your name"
+                            label="Your name (optional)"
                             inputProps={{maxLength: 25}}
                             onChange={(e) => {
                                 setName(e.target.value)
                             }}/>
                     </Grid>
                 </Grid>
+            </div>
+            <div className="row m-1">
                 <TextField
                     id="messageField"
-                    label="Write here some epic shit"
+                    label="Write here an epic message"
                     inputProps={{maxLength: 130}}
                     fullWidth
                     multiline
@@ -202,6 +206,8 @@ function Submit() {
                         setMessage(e.target.value)
                     }}
                 />
+            </div>
+            <div className="row m-1 mt-2">
                 <input
                     id="imageField"
                     type="file"
@@ -210,18 +216,23 @@ function Submit() {
                         setImage(e.target.files[0]);
                     }}
                 />
-                <div className="d-flex justify-content-end w-100 mt-2">
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        endIcon={<SendIcon/>}
-                        disabled={disabled}
-                        onClick={() => {
-                            setDisabled(true);
-                            prepareUpload();
-                        }}>
-                        Send to the TV
-                    </Button>
+            </div>
+            <div className="row d-flex justify-content-end w-100 mt-4">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<SendIcon/>}
+                    disabled={disabled}
+                    onClick={() => {
+                        setDisabled(true);
+                        prepareUpload();
+                    }}>
+                    Send to the TV
+                </Button>
+            </div>
+            <div className="row">
+                <div className="uploadtooltip fixed-bottom shadow-sm m-3 mt-5">
+                    <strong>Pro tip:</strong> Spice up your photo or video with Instagram Stories' editor before uploading it here! 8 seconds max.
                 </div>
             </div>
         </div>
