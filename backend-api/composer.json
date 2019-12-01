@@ -9,9 +9,11 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "ext-curl": "*",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
+        "pusher/pusher-php-server": "~4.0",
         "spatie/laravel-cors": "^1.6"
     },
     "require-dev": {

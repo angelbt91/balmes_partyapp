@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@material-ui/icons": "^4.5.1",
+    "pusher": "^3.0.0",
+    "pusher-js": "^5.0.3",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-router-dom": "^5.1.2",

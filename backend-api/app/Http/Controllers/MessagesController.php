@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Http\Models\MessageModel;
+use App\Events\MyEvent;
 
 class MessagesController extends Controller
 {
     public function PostMessage(Request $request)
     {
+
         // la convertimos en array para tratarla
         $request = $request->all();
 
@@ -53,6 +55,7 @@ class MessagesController extends Controller
                 'message' => 'Mensaje recibido y guardado correctamente.',
                 'data' => $message
             );
+
         } else {
             // si la petición está vacía, devolvemos error
             $response = array(
@@ -63,7 +66,7 @@ class MessagesController extends Controller
             );
         }
 
-        return response()->json($response);
+                return response()->json($response);
 
     }
 
@@ -104,6 +107,9 @@ class MessagesController extends Controller
                     'message' => 'La fila se ha actualizado',
                     'data' => $request
                 );
+
+                // triggeamos evento para notificar al front-end
+                event(new MyEvent('hello world'));
             }
         } else {
             // si está vacío, devolveremos esto
@@ -118,5 +124,10 @@ class MessagesController extends Controller
         // sea lo que sea, devolveremos la respuesta
         return response()->json($response);
 
+    }
+
+    public function TestBroadcast() {
+        // triggeamos evento para notificar al front-end
+        event(new MyEvent("BDD actualizada"));
     }
 }

@@ -32,12 +32,18 @@ return [
 
         'pusher' => [
             'driver' => 'pusher',
-            'key' => env('PUSHER_APP_KEY'),
-            'secret' => env('PUSHER_APP_SECRET'),
-            'app_id' => env('PUSHER_APP_ID'),
+            'key' => env('5cc6a7b52b164fc3f417'),
+            'secret' => env('b070d811d6f348bfb0ea'),
+            'app_id' => env('909926'),
             'options' => [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'cluster' => env('eu'),
                 'useTLS' => true,
+                //'encrypted' => false,
+                //'verify_peer' => false,
+                //'curl_options' => [
+                //    CURLOPT_SSL_VERIFYHOST => 0,
+                //    CURLOPT_SSL_VERIFYPEER => 0,
+                //],
             ],
         ],
 

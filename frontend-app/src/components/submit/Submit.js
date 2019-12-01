@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../bootstrap.min.css';
 import './submit.css';
 import Grid from '@material-ui/core/Grid';
@@ -8,8 +8,26 @@ import SendIcon from '@material-ui/icons/Send';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Pusher from 'pusher-js';
 
 function Submit() {
+
+    // cargamos el websocket para escuchar
+    useEffect(() => {
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('5cc6a7b52b164fc3f417', {
+            cluster: 'eu',
+            forceTLS: false
+        });
+
+        var channel = pusher.subscribe('my-channel');
+
+        channel.bind('my-event', function(data) {
+            console.log("He recibido algo por websocket:\n" + JSON.stringify(data));
+        });
+    }, []);
 
     const [name, setName] = useState("");
     const [message, setMessage] = useState("");
