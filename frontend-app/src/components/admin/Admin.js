@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../bootstrap.min.css';
 import './admin.css';
 import Fab from '@material-ui/core/Fab';
@@ -42,6 +42,10 @@ function Admin() {
             })
 
     };
+
+    useEffect(() => {
+        fetchMessages();
+    }, [])
 
     return (
         <div className="container">
