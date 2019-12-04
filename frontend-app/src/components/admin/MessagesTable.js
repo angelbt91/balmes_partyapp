@@ -18,7 +18,7 @@ function MessagesTable(props) {
                 <TableCell align="right">{row.updated_at}</TableCell>
                 <TableCell align="right">{row.name}</TableCell>
                 <TableCell align="right">{row.message}</TableCell>
-                <TableCell align="right"><MessageMedia props={row.image}/></TableCell>
+                <TableCell align="right"><MessageMedia url={row.image}/></TableCell>
                 <TableCell align="right">
                     <ShowingCheckbox id={row.id} showing={row.showing}/>
                 </TableCell>

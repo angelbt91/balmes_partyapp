@@ -62,7 +62,7 @@ function ShowingCheckbox(props) {
                 return Promise.reject(response.status);
             }
         }).then(response => {
-            if (response.data.showing == 0) {
+            if (response.data.showing === 0) {
                 toast.success("El mensaje " + response.data.id + " ya no se mostrará.", toastOptions);
             } else {
                 toast.success("El mensaje " + response.data.id + " se mostrará a partir de ahora.", toastOptions);

@@ -1,13 +1,21 @@
 import React from 'react';
 
 function MessageMedia(props) {
+
     return (
-        <a href={props.props} target="_blank">
-            <img
-                src={props.props}
-                height="40px"
-            />
-        </a>
+        <div>
+            {
+                props.url === null
+                    ? null
+                    : <a href={props.url} target="_blank" rel="noopener noreferrer">
+                        <img
+                            src={props.url}
+                            height="40px"
+                            alt=""
+                        />
+                    </a>
+            }
+        </div>
     )
 }
 
