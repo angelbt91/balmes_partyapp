@@ -6,6 +6,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import ShowingCheckbox from "./ShowingCheckbox";
+import MessageMedia from "./MessageMedia";
 
 function MessagesTable(props) {
 
@@ -17,7 +18,7 @@ function MessagesTable(props) {
                 <TableCell align="right">{row.updated_at}</TableCell>
                 <TableCell align="right">{row.name}</TableCell>
                 <TableCell align="right">{row.message}</TableCell>
-                <TableCell align="right">{row.image}</TableCell>
+                <TableCell align="right"><MessageMedia props={row.image}/></TableCell>
                 <TableCell align="right">
                     <ShowingCheckbox id={row.id} showing={row.showing}/>
                 </TableCell>
@@ -35,7 +36,7 @@ function MessagesTable(props) {
                         <TableCell align="right">Last updated</TableCell>
                         <TableCell align="right">Name</TableCell>
                         <TableCell align="right">Message</TableCell>
-                        <TableCell align="right">Media URL</TableCell>
+                        <TableCell align="right">Media</TableCell>
                         <TableCell align="right">Showing</TableCell>
                     </TableRow>
                 </TableHead>
