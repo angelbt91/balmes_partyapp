@@ -4,6 +4,7 @@ import './admin.css';
 import Fab from '@material-ui/core/Fab';
 import CachedIcon from '@material-ui/icons/Cached';
 import MessagesTable from "./MessagesTable";
+import {ToastContainer} from "react-toastify";
 
 function Admin() {
 
@@ -45,10 +46,21 @@ function Admin() {
 
     useEffect(() => {
         fetchMessages();
-    }, [])
+    }, []);
 
     return (
         <div className="container">
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnVisibilityChange={false}
+                draggable
+                pauseOnHover
+            />
             <div className="row justify-content-between mt-4">
                 <h1>Admin panel</h1>
                 <Fab onClick={fetchMessages} color="primary">

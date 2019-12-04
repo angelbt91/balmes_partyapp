@@ -97,8 +97,14 @@ class MessagesController extends Controller
                     'message' => 'El ID debe ser numérico',
                     'data' => $request
                 );
+                return response()->json([$response], 400);
             } else {
                 // si no, actualizamos la fila y devolveremos éxito
+                if ($request['showing'] === true) {
+                    $request['showing'] = 1;
+                } else {
+                    $request['showing'] = 0;
+                }
                 MessageModel::where('id', $request['id'])->update($request);
 
                 $response = array(
@@ -107,9 +113,6 @@ class MessagesController extends Controller
                     'message' => 'La fila se ha actualizado',
                     'data' => $request
                 );
-
-                // triggeamos evento para notificar al front-end
-                event(new MyEvent('hello world'));
             }
         } else {
             // si está vacío, devolveremos esto
@@ -119,6 +122,7 @@ class MessagesController extends Controller
                 'message' => 'El cuerpo de la petición está vacío o no es correcto.',
                 'data' => $request
             );
+            return response()->json([$response], 400);
         }
 
         // sea lo que sea, devolveremos la respuesta
