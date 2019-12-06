@@ -97,7 +97,8 @@ function Submit() {
             headers: new Headers({
                 Accept: 'application/json',
                 'Content-type': 'application/json',
-                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Headers': 'Content-Type, X-Auth-Token, Origin',
+                'Access-Control-Allow-Origin': '*'
             }),
             mode: 'cors'
         };
