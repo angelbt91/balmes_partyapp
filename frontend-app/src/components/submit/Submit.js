@@ -58,9 +58,6 @@ function Submit() {
             return;
         }
 
-        // avisamos de que procedemos a enviar el mensaje
-        toast.info('Sending message...', toastOptions);
-
         // si no hay imagen, saltamos directamente a enviar mensaje sin ella
         if (data.image === "") {
             uploadMessage();
@@ -193,7 +190,10 @@ function Submit() {
                 />
 
                 <div className="row m-1">
-                    <h1>Balmes' New Year's App</h1>
+                    <h1
+                        style={{width: "100%", textAlign: "center"}}
+                        className="mt-4"
+                    >Balmes' 2020</h1>
                     <Grid container spacing={1} alignItems="flex-end">
                         <Grid item>
                             <AccountCircle/>
@@ -236,12 +236,14 @@ function Submit() {
                         }}
                     />
                 </div>
-                <div className="row d-flex justify-content-end w-100 mt-4">
+                <div className="row d-flex justify-content-center m-4 mt-5">
                     <Button
                         variant="contained"
                         color="primary"
                         endIcon={<SendIcon/>}
                         disabled={disabled}
+                        style={{width: "100%"}}
+                        size="large"
                         onClick={() => {
                             setDisabled(true);
                             prepareUpload();
