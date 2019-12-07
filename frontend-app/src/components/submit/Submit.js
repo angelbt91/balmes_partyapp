@@ -124,7 +124,6 @@ function Submit() {
             });
     };
 
-
     // y finalmente, subir el mensaje
     const uploadMessage = async () => {
 

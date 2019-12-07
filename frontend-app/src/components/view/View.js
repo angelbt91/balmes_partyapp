@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import Stories from 'react-insta-stories';
+import '../bootstrap.min.css';
+import './view.css';
+import bgVideo from '../../resources/bgvideo01.mp4'
+import get from "../../helpers/fetchHelper";
 
 /*
 - Recojo todos los mensajes en una array.
@@ -14,8 +19,40 @@ y me quedo el que su index coincida con la array de indexMessages. Sumo +1 a esa
  */
 
 function View() {
+
+    const [allMessagesArray, setAllMessagesArray] = useState([]);
+
+    const updateAllMessagesArray = () => {
+        get("http://127.0.0.1/api/getmessages").then((response) => {
+            setAllMessagesArray(response);
+        });
+    };
+
+    // effect to invoke updateAllMessagesArray recurrently at the first render
+    useEffect(() => {
+        setInterval(
+            () => {
+                get("http://127.0.0.1/api/getmessages")
+                    .then((response) => {
+                            setAllMessagesArray(response);
+                        }
+                    );
+            }, 4000);
+    }, []);
+
+
     return (
-        <p>Hola!</p>
+        <div className="container-fluid canvas">
+                <video autoPlay muted loop id="bgVideo">
+                    <source src={bgVideo} type="video/mp4" />
+                </video>
+            {/*<Stories
+                stories={stories}
+                defaultInterval={1500}
+                width={432}
+                height={768}
+            />*/}
+        </div>
     )
 }
 

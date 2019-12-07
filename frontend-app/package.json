@@ -8,6 +8,7 @@
     "pusher-js": "^5.0.3",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
+    "react-insta-stories": "^2.0.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-toastify": "^5.4.1"
