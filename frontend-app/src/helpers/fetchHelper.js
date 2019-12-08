@@ -19,13 +19,9 @@ async function get(url) {
             }
         })
         .then(response => {
-            console.log("GET succesfully completed!");
-            console.log(response);
             return response;
         })
         .catch(error => {
-            console.log("Error on the GET request.");
-            console.log(error.statusText);
             return error;
         })
 }

@@ -5,11 +5,13 @@
     min-width: 100%;
     min-height: 100%;
     display: block;
+    z-index: -2;
 }
 
 .canvas {
     width: 100vw;
     height: 100vh;
+    z-index: -3;
 }
 
 .canvas::before {
@@ -20,5 +22,5 @@
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 2;
+    z-index: -1;
 }
