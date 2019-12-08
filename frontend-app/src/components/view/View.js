@@ -7,11 +7,15 @@ import StoryHandler from "./StoryHandler";
 function View() {
 
     return (
-        <div className="container-fluid canvas">
-            <StoryHandler/>
-            <video autoPlay muted loop id="bgVideo">
-                <source src={bgVideo} type="video/mp4"/>
-            </video>
+        <div className="container-fluid canvas ">
+            <div className="row h-100 w-100 justify-content-center align-items-center">
+                <div className="wrapper">
+                    <StoryHandler/>
+                    <video autoPlay muted loop id="bgVideo">
+                        <source src={bgVideo} type="video/mp4"/>
+                    </video>
+                </div>
+            </div>
         </div>
     )
 }

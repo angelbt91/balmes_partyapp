@@ -25,6 +25,12 @@
     z-index: -1;
 }
 
+.wrapper {
+    width: 800px;
+    height: 600px;
+    background-color: white;
+}
+
 .message {
-    color: white;
+
 }
