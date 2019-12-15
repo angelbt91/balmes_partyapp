@@ -96,9 +96,7 @@ function Submit() {
             body: JSON.stringify(imageData),
             headers: new Headers({
                 Accept: 'application/json',
-                'Content-type': 'application/json',
-                'Access-Control-Allow-Headers': 'Content-Type, X-Auth-Token, Origin',
-                'Access-Control-Allow-Origin': '*'
+                'Content-type': 'application/json'
             }),
             mode: 'cors'
         };

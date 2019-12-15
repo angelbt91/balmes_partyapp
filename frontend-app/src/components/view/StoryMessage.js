@@ -11,16 +11,61 @@ function StoryMessage(props) {
      */
 
     let messageData = props.messageToShow;
+    let storyType;
+
+    // caso 1: no hay imagen
+    if (!messageData.image) {
+        storyType = 1;
+    } else {
+        // casos con imagen
+        let image = document.createElement('img');
+        image.src = messageData.image;
+
+        if (image.naturalWidth > image.naturalHeight && !messageData.message) {
+            storyType = 2;
+        } else if (image.naturalWidth <= image.naturalHeight && !messageData.message) {
+            storyType = 3;
+        } else if (image.naturalWidth > image.naturalHeight && messageData.message != null) {
+            storyType = 4;
+        } else if (image.naturalWidth <= image.naturalHeight && messageData.message != null) {
+            storyType = 5;
+        } else {
+            console.log("Por algún motivo, el mensaje a enseñar no encaja en ningún tipo de story.");
+        }
+    }
 
     return (
         <div>
-            <button
-                onClick={props.ChooseNewMessage}
-            >
-                SIGUIENTE MENSAJE
-            </button>
-            <p>{messageData.message}</p>
-            <img src={messageData.image} width="150px" alt=""/>
+            <button onClick={props.ChooseNewMessage}>Otro</button>
+            {storyType === 1 ?
+                <>
+                    <p>Name: {props.messageToShow.name}</p>
+                    <p>Message: {props.messageToShow.message}</p>
+                </>
+                :
+                storyType === 2 ?
+                    <>
+                        <p>Name: {props.messageToShow.name}</p>
+                        <p>Message: {props.messageToShow.message}</p>
+                    </>
+                    :
+                    storyType === 3 ?
+                        <>
+                            <p>Name: {props.messageToShow.name}</p>
+                            <p>Message: {props.messageToShow.message}</p>
+                        </>
+                        :
+                        storyType === 4 ?
+                            <>
+                                <p>Name: {props.messageToShow.name}</p>
+                                <p>Message: {props.messageToShow.message}</p>
+                            </>
+                            :
+                            <>
+                                <p>Name: {props.messageToShow.name}</p>
+                                <p>Message: {props.messageToShow.message}</p>
+                            </>
+            }
         </div>
     )
 }
