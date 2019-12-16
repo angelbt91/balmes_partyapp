@@ -13,7 +13,7 @@ function View() {
 
     return (
         <MsgContext.Provider value={{state, dispatch}}>
-            <div className="container-fluid canvas ">
+            <div className="container-fluid canvas">
                 <div className="row h-100 w-100 justify-content-center align-items-center">
                     <div className="wrapper">
                         <StoryHandler/>

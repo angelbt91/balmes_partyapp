@@ -1,4 +1,5 @@
 import React from 'react';
+import Format5 from "./formats/Format5";
 
 function StoryMessage(props) {
 
@@ -10,61 +11,42 @@ function StoryMessage(props) {
     5 = Sí imagen (vertical) + sí mensaje
      */
 
-    let messageData = props.messageToShow;
-    let storyType;
+    let messageToShow = props.messageToShow;
 
-    // caso 1: no hay imagen
-    if (!messageData.image) {
-        storyType = 1;
-    } else {
-        // casos con imagen
-        let image = document.createElement('img');
-        image.src = messageData.image;
-
-        if (image.naturalWidth > image.naturalHeight && !messageData.message) {
-            storyType = 2;
-        } else if (image.naturalWidth <= image.naturalHeight && !messageData.message) {
-            storyType = 3;
-        } else if (image.naturalWidth > image.naturalHeight && messageData.message != null) {
-            storyType = 4;
-        } else if (image.naturalWidth <= image.naturalHeight && messageData.message != null) {
-            storyType = 5;
-        } else {
-            console.log("Por algún motivo, el mensaje a enseñar no encaja en ningún tipo de story.");
-        }
-    }
 
     return (
         <div>
             <button onClick={props.ChooseNewMessage}>Otro</button>
-            {storyType === 1 ?
+            {messageToShow.storyType === 1 ?
                 <>
-                    <p>Name: {props.messageToShow.name}</p>
-                    <p>Message: {props.messageToShow.message}</p>
+                    <p>Name: {messageToShow.name}</p>
+                    <p>Message: {messageToShow.message}</p>
                 </>
                 :
-                storyType === 2 ?
+                messageToShow.storyType === 2 ?
                     <>
-                        <p>Name: {props.messageToShow.name}</p>
-                        <p>Message: {props.messageToShow.message}</p>
+                        <p>Name: {messageToShow.name}</p>
+                        <p>Message: {messageToShow.message}</p>
                     </>
                     :
-                    storyType === 3 ?
+                    messageToShow.storyType === 3 ?
                         <>
-                            <p>Name: {props.messageToShow.name}</p>
-                            <p>Message: {props.messageToShow.message}</p>
+                            <p>Name: {messageToShow.name}</p>
+                            <p>Message: {messageToShow.message}</p>
                         </>
                         :
-                        storyType === 4 ?
+                        messageToShow.storyType === 4 ?
                             <>
-                                <p>Name: {props.messageToShow.name}</p>
-                                <p>Message: {props.messageToShow.message}</p>
+                                <p>Name: {messageToShow.name}</p>
+                                <p>Message: {messageToShow.message}</p>
                             </>
                             :
-                            <>
-                                <p>Name: {props.messageToShow.name}</p>
-                                <p>Message: {props.messageToShow.message}</p>
-                            </>
+                            messageToShow.storyType === 5 ?
+                                <>
+                                    <Format5 ChooseNewMessage={props.ChooseNewMessage} msg={messageToShow}/>
+                                </>
+                                :
+                                <p>Cargando...</p>
             }
         </div>
     )
