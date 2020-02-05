@@ -5,6 +5,7 @@ import Fab from '@material-ui/core/Fab';
 import CachedIcon from '@material-ui/icons/Cached';
 import MessagesTable from "./MessagesTable";
 import {ToastContainer} from "react-toastify";
+import get from "../../helpers/fetchHelper";
 
 function Admin() {
 
@@ -12,35 +13,11 @@ function Admin() {
     const [messagesArray, setMessagesArray] = useState(null);
 
     // para actualizar el state de mensaje
-    const fetchMessages = async () => {
+    const fetchMessages = () => {
 
-        const url = 'http://127.0.0.1/api/getmessages';
-
-        const options = {
-            method: 'GET',
-            headers: new Headers({
-                Accept: 'application/json',
-                'Content-type': 'application/json',
-                'Access-Control-Allow-Headers': 'Content-Type',
-            }),
-            mode: 'cors'
-        };
-
-        return fetch(url, options)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return Promise.reject(response.status);
-                }
-            })
-            .then(response => {
+        get("http://127.0.0.1/api/getmessages").then((response) => {
                 setMessagesArray(response);
-                return response.status;
-            })
-            .catch(error => {
-                return error.status;
-            })
+        });
 
     };
 

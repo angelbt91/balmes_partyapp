@@ -1,0 +1,36 @@
+#bgVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    display: block;
+    z-index: -2;
+}
+
+.canvas {
+    width: 100vw;
+    height: 100vh;
+    z-index: -3;
+}
+
+.canvas::before {
+    content: '';
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.wrapper {
+    width: 1700px;
+    height: 900px;
+    background-color: white;
+}
+
+.message {
+
+}

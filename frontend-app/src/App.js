@@ -1,6 +1,7 @@
 import React from 'react';
 import Submit from "./components/submit/Submit";
 import Admin from "./components/admin/Admin";
+import View from "./components/view/View";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -13,7 +14,7 @@ function App() {
                 <Submit/>
             </Route>
             <Route path="/view">
-              {/* COMPONENTE DE TV */}
+              <View/>
             </Route>
             <Route path="/admin">
               <Admin/>

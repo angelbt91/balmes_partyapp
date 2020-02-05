@@ -96,8 +96,7 @@ function Submit() {
             body: JSON.stringify(imageData),
             headers: new Headers({
                 Accept: 'application/json',
-                'Content-type': 'application/json',
-                'Access-Control-Allow-Headers': 'Content-Type',
+                'Content-type': 'application/json'
             }),
             mode: 'cors'
         };
@@ -122,7 +121,6 @@ function Submit() {
                 return Promise.reject(error.status);
             });
     };
-
 
     // y finalmente, subir el mensaje
     const uploadMessage = async () => {
