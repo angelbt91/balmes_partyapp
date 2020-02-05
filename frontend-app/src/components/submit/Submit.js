@@ -86,13 +86,13 @@ function Submit() {
     const publishImage = async () => {
 
         // bases para hacer el fetch
-        const url = 'https://api.cloudinary.com/v1_1/themrangel/auto/upload';
+        const url = 'http://127.0.0.1/api/profilepicture';
         const imageData = {
-            "file": data.image,
+            "image": data.image,
             "upload_preset": "iqxfcs3m"
         };
         const options = {
-            method: 'POST',
+            method: 'PUT',
             body: JSON.stringify(imageData),
             headers: new Headers({
                 Accept: 'application/json',
