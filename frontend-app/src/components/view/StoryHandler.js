@@ -19,37 +19,39 @@ function StoryHandler() {
     return (
         <div>
             <button onClick={e => ChooseNextMessage()}>Otro</button>
-            {message.storyType === 1 ?
-                <>
-                    <p>Name: {message.name}</p>
-                    <p>Message: {message.message}</p>
-                </>
-                :
-                message.storyType === 2 ?
+            {message ?
+                message.storyType === 1 ?
                     <>
                         <p>Name: {message.name}</p>
                         <p>Message: {message.message}</p>
                     </>
                     :
-                    message.storyType === 3 ?
+                    message.storyType === 2 ?
                         <>
                             <p>Name: {message.name}</p>
                             <p>Message: {message.message}</p>
                         </>
                         :
-                        message.storyType === 4 ?
+                        message.storyType === 3 ?
                             <>
                                 <p>Name: {message.name}</p>
                                 <p>Message: {message.message}</p>
                             </>
                             :
-                            message.storyType === 5 ?
+                            message.storyType === 4 ?
                                 <>
-                                    <Format5 ChooseNewMessage={ChooseNextMessage} message={message}/>
+                                    <p>Name: {message.name}</p>
+                                    <p>Message: {message.message}</p>
                                 </>
                                 :
-                                <p>Cargando...</p>
-            }
+                                message.storyType === 5 ?
+                                    <>
+                                        <Format5 ChooseNewMessage={ChooseNextMessage} message={message}/>
+                                    </>
+                                    :
+                                    <p>El mensaje no coincide con ningun StoryType.</p>
+                :
+                <p>No hay mensajes.</p>}
         </div>
     );
 
