@@ -16,9 +16,9 @@ const MessageReducer = (state = initialState, action) => {
 
         get("http://127.0.0.1/api/getmessages")
             .then((messages) => {
-
                 if (allMessagesAreHidden(messages)) {
-                    return console.log("No hay ningún mensaje con showing === 1 en la array.");
+                    console.log("No hay ningún mensaje con showing === 1 en la array.");
+                    return null;
                 }
 
                 messages = excludeHiddenMessages(messages);
@@ -35,7 +35,7 @@ const MessageReducer = (state = initialState, action) => {
                 } else {
                     newState.currentMessageIndex++;
 
-                    if (newState.currentMessageIndex >= messages.length) {
+                    if (newState.currentMessageIndex >= messages.length || newState.currentMessageIndex < 0) {
                         newState.currentMessageIndex = 0;
                     }
 
@@ -46,9 +46,9 @@ const MessageReducer = (state = initialState, action) => {
                 }
 
                 newState.currentMessage = newMessage;
+                return newState;
 
             });
-
     }
 
     return newState;
@@ -58,8 +58,7 @@ const MessageReducer = (state = initialState, action) => {
 const allMessagesAreHidden = (messages) => {
     let messagesArray = [...messages];
     messagesArray = messagesArray.filter(message => message.showing === 1);
-
-    return messagesArray.length = 0;
+    return messagesArray.length === 0;
 };
 
 const excludeHiddenMessages = (messages) => {
@@ -98,6 +97,10 @@ const getFirstUnviewedMessage = (messages, alreadySeenMessages) => {
 const getStoryType = (story) => {
 
     let storyType;
+
+    if (story === undefined) {
+        return 0;
+    }
 
     if (!story.image) {
         storyType = 1; // solo mensaje
