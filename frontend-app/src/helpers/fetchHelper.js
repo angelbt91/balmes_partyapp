@@ -12,7 +12,7 @@ async function get(url) {
 
     return fetch(url, options)
         .then(response => {
-            if (response.ok) {
+            if (response.ok && response !== null) {
                 return response.json();
             } else {
                 return Promise.reject(response.status);
@@ -22,6 +22,7 @@ async function get(url) {
             return response;
         })
         .catch(error => {
+            console.log(error);
             return error;
         })
 }

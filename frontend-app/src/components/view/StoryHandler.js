@@ -6,11 +6,11 @@ import Format5 from "./formats/Format5";
 function StoryHandler() {
 
     const {state, dispatch} = useContext(MsgContext);
-    const message = state.currentMessageToShow;
+    const message = state.currentMessage;
 
     useEffect(() => {
-        ChooseNextMessage();
-    }, []);
+        dispatch({type: GET_NEXT_MESSAGE}); // to start showing the first message
+    }, [dispatch]);
 
     function ChooseNextMessage() {
         dispatch({type: GET_NEXT_MESSAGE});
@@ -19,7 +19,6 @@ function StoryHandler() {
     return (
         <div>
             <button onClick={e => ChooseNextMessage()}>Otro</button>
-            <p>Índice: {state.currentMessageIndex}</p>
             {message.storyType === 1 ?
                 <>
                     <p>Name: {message.name}</p>
@@ -46,7 +45,7 @@ function StoryHandler() {
                             :
                             message.storyType === 5 ?
                                 <>
-                                    <Format5 ChooseNewMessage={ChooseNextMessage} msg={message}/>
+                                    <Format5 ChooseNewMessage={ChooseNextMessage} message={message}/>
                                 </>
                                 :
                                 <p>Cargando...</p>

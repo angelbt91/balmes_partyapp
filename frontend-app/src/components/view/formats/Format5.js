@@ -8,13 +8,21 @@ export default function Format5(props) {
         return (null);
     }
 
-    let msg = props.msg;
+    let message = props.message;
+    let style = `background-image: url("${message.image}");`;
 
     const stories = [{
-        url: msg.image,
+        content: () => {
+            return (
+                <div className="format5" style={{backgroundImage: `url(${message.image})`}}>
+                    <h2>{message.message}</h2>
+                </div>
+            );
+        },
+        url: message.image,
         header: {
-            heading: msg.name,
-            subheading: msg.created_at,
+            heading: message.name,
+            subheading: message.created_at,
             profileImage: 'https://picsum.photos/1080/1920'
         }
     }];
