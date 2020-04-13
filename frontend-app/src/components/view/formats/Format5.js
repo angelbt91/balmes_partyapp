@@ -5,7 +5,7 @@ export default function Format5(props) {
 
     if (!props) {
         console.log("Aún no hay props que pintar");
-        return null;
+        return (null);
     }
 
     let msg = props.msg;
@@ -22,9 +22,10 @@ export default function Format5(props) {
     return (
         <Stories
             stories={stories}
-            defaultInterval={10000}
+            defaultInterval={6000}
             width={478}
             height={850}
+            onStoryEnd={props.ChooseNewMessage}
         />
     )
 
