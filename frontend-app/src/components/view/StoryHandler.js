@@ -1,5 +1,4 @@
-import React, {useEffect, useState, useReducer} from 'react';
-import {GET_NEXT_MESSAGE} from "./reducer/reducer";
+import React, {useEffect, useState} from 'react';
 import Format5 from "./formats/Format5";
 
 function StoryHandler() {
@@ -14,20 +13,7 @@ function StoryHandler() {
         alreadySeenMessages: []
     };
 
-    const MessageReducer = (state, action) => {
-        let newState = {...state};
-        const {type} = {...action};
-
-        if (type === GET_NEXT_MESSAGE) {
-            newState = action.state;
-        }
-
-        return newState;
-    };
-
-    const [state, dispatch] = useReducer(MessageReducer, initialState);
-
-    const [isFetching, setIsFetching] = useState(false);
+    const [state, setState] = useState(initialState);
     const [getNextMessage, setGetNextMessage] = useState(true);
 
     useEffect(() => {
@@ -37,13 +23,7 @@ function StoryHandler() {
 
         setGetNextMessage(false);
 
-        if (isFetching)
-            return;
-
-        setIsFetching(true);
-
         const url = 'http://127.0.0.1/api/getmessages';
-
         const options = {
             method: 'GET',
             headers: new Headers({
@@ -70,8 +50,7 @@ function StoryHandler() {
 
                 messages = excludeHiddenMessages(messages);
 
-                let newState = state;
-
+                let newState = {...state};
                 if (thereAreUnviewedMessages(messages, newState.alreadySeenMessages)) {
                     newState.currentMessage = getFirstUnviewedMessage(messages, newState.alreadySeenMessages);
                     newState.currentMessage.storyType = getStoryType(newState.currentMessage);
@@ -92,13 +71,12 @@ function StoryHandler() {
                     logMessage(newState, false);
                 }
 
-                dispatch({"state": newState, "type": GET_NEXT_MESSAGE});
-                setIsFetching(false);
-                return newState;
+                setState(newState);
+                return setGetNextMessage(false);
             })
             .catch(error => {
                 console.log("Error ", error);
-                setIsFetching(false);
+                setGetNextMessage(false);
                 return error;
             });
     }, [getNextMessage]);
@@ -106,16 +84,14 @@ function StoryHandler() {
     /***************** UTILITIES ********************/
 
     const allMessagesAreHidden = (messages) => {
-        let messagesArray = messages;
-        messagesArray = messagesArray.filter(message => message.showing === 1);
-        return messagesArray.length === 0;
+        messages = messages.filter(message => message.showing === 1);
+        return messages.length === 0;
     };
 
     const excludeHiddenMessages = (messages) => {
-        let messagesArray = [...messages];
-        messagesArray = messagesArray.filter(message => message.showing === 1);
+        messages = messages.filter(message => message.showing === 1);
 
-        return messagesArray;
+        return messages;
     };
 
     const thereAreUnviewedMessages = (messages, alreadySeenMessages) => {
@@ -189,10 +165,6 @@ function StoryHandler() {
         console.log("Current index: " + state.currentMessageIndex);
     };
 
-    const getAnotherMessage = () => {
-        setGetNextMessage(true);
-    }
-
     /***************** UTILITIES ********************/
 
     return (
@@ -224,7 +196,9 @@ function StoryHandler() {
                             :
                             state.currentMessage.storyType === 5 ?
                                 <>
-                                    <Format5 ChooseNewMessage={() => {setGetNextMessage(true)}} message={state.currentMessage}/>
+                                    <Format5 ChooseNewMessage={() => {
+                                        setGetNextMessage(true)
+                                    }} message={state.currentMessage}/>
                                 </>
                                 :
                                 <p>Cargando...</p>

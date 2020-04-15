@@ -10,7 +10,7 @@ import get from "../../helpers/fetchHelper";
 function Admin() {
 
     // useState para guardar los mensajes y triggear el re-render
-    const [messagesArray, setMessagesArray] = useState(null);
+    const [messagesArray, setMessagesArray] = useState(undefined);
 
     // para actualizar el state de mensaje
     const fetchMessages = () => {
@@ -45,7 +45,7 @@ function Admin() {
                 </Fab>
             </div>
             <div className="row mt-3">
-                { messagesArray === null
+                { typeof (messagesArray) === undefined
                     ? <p>Click on the button above to load the messages!</p>
                     : <MessagesTable props={messagesArray}/>
                 }
