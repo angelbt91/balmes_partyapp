@@ -5,17 +5,32 @@ import Fab from '@material-ui/core/Fab';
 import CachedIcon from '@material-ui/icons/Cached';
 import MessagesTable from "./MessagesTable";
 import {ToastContainer} from "react-toastify";
-import get from "../../helpers/fetchHelper";
 
 function Admin() {
 
-    // useState para guardar los mensajes y triggear el re-render
-    const [messagesArray, setMessagesArray] = useState(undefined);
+    const [messagesArray, setMessagesArray] = useState([]);
 
-    // para actualizar el state de mensaje
     const fetchMessages = () => {
 
-        get("http://127.0.0.1/api/getmessages").then((response) => {
+        const url = 'http://127.0.0.1/api/getmessages';
+        const options = {
+            method: 'GET',
+            headers: new Headers({
+                Accept: 'application/json',
+                'Content-type': 'application/json',
+                'Access-Control-Allow-Headers': 'Content-Type',
+            }),
+            mode: 'cors'
+        };
+
+        fetch(url, options)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return Promise.reject(response.status);
+                }
+            }).then((response) => {
                 setMessagesArray(response);
         });
 
@@ -45,7 +60,7 @@ function Admin() {
                 </Fab>
             </div>
             <div className="row mt-3">
-                { typeof (messagesArray) === undefined
+                { messagesArray === []
                     ? <p>Click on the button above to load the messages!</p>
                     : <MessagesTable props={messagesArray}/>
                 }
