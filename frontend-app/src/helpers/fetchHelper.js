@@ -10,16 +10,13 @@ async function get(url) {
         mode: 'cors'
     };
 
-    return fetch(url, options)
+    fetch(url, options)
         .then(response => {
             if (response.ok && response !== null) {
                 return response.json();
             } else {
                 return Promise.reject(response.status);
             }
-        })
-        .then(response => {
-            return response;
         })
         .catch(error => {
             console.log(error);
