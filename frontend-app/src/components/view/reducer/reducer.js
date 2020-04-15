@@ -1,8 +1,12 @@
 import {useReducer} from "react";
 import get from "../../../helpers/fetchHelper";
-
+/*
 const initialState = {
-    currentMessage: {},
+    currentMessage: {
+        name: "Loading messages...",
+        message: "Loading messages...",
+        storyType: 1
+    },
     currentMessageIndex: -1,
     alreadySeenMessages: []
 };
@@ -14,41 +18,67 @@ const MessageReducer = (state = initialState, action) => {
 
     if (type === GET_NEXT_MESSAGE) {
 
-        get("http://127.0.0.1/api/getmessages")
-            .then((messages) => {
-                if (allMessagesAreHidden(messages)) {
-                    console.log("No hay ningún mensaje con showing === 1 en la array.");
-                    return null;
-                }
+        (async () => {
+            const url = 'http://127.0.0.1/api/getmessages';
 
-                messages = excludeHiddenMessages(messages);
-                let newMessage;
+            const options = {
+                method: 'GET',
+                headers: new Headers({
+                    Accept: 'application/json',
+                    'Content-type': 'application/json',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                }),
+                mode: 'cors'
+            };
 
-                if (thereAreUnviewedMessages(messages, newState.alreadySeenMessages)) {
-                    newMessage = getFirstUnviewedMessage(messages, newState.alreadySeenMessages);
-                    newMessage.storyType = getStoryType(newMessage);
-
-                    newState.currentMessage = newMessage;
-                    newState.alreadySeenMessages.push(newState.currentMessage.id);
-
-                    logMessage(newState, true);
-                } else {
-                    newState.currentMessageIndex++;
-
-                    if (newState.currentMessageIndex >= messages.length || newState.currentMessageIndex < 0) {
-                        newState.currentMessageIndex = 0;
+            newState = await fetch(url, options)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return Promise.reject(response.status);
+                    }
+                })
+                .then(messages => {
+                    if (allMessagesAreHidden(messages)) {
+                        console.log("No hay ningún mensaje con showing === 1 en la array.");
+                        return null;
                     }
 
-                    newMessage = messages[newState.currentMessageIndex];
-                    newMessage.storyType = getStoryType(newMessage);
+                    messages = excludeHiddenMessages(messages);
+                    let newMessage;
 
-                    logMessage(newState, false);
-                }
+                    if (thereAreUnviewedMessages(messages, newState.alreadySeenMessages)) {
+                        newMessage = getFirstUnviewedMessage(messages, newState.alreadySeenMessages);
+                        newMessage.storyType = getStoryType(newMessage);
 
-                newState.currentMessage = newMessage;
-                return newState;
+                        newState.currentMessage = newMessage;
+                        newState.alreadySeenMessages.push(newState.currentMessage.id);
 
-            });
+                        logMessage(newState, true);
+                    } else {
+                        newState.currentMessageIndex++;
+
+                        if (newState.currentMessageIndex >= messages.length || newState.currentMessageIndex < 0) {
+                            newState.currentMessageIndex = 0;
+                        }
+
+                        newMessage = messages[newState.currentMessageIndex];
+                        newMessage.storyType = getStoryType(newMessage);
+
+                        logMessage(newState, false);
+                    }
+
+                    newState.currentMessage = newMessage;
+                    return newState;
+                })
+                .catch(error => {
+                    console.log(error);
+                    return error;
+                });
+
+        })()
+
     }
 
     return newState;
@@ -56,7 +86,7 @@ const MessageReducer = (state = initialState, action) => {
 };
 
 const allMessagesAreHidden = (messages) => {
-    let messagesArray = [...messages];
+    let messagesArray = messages;
     messagesArray = messagesArray.filter(message => message.showing === 1);
     return messagesArray.length === 0;
 };
@@ -137,6 +167,8 @@ const logMessage = (state, isNew) => {
     console.log(state.alreadySeenMessages);
     console.log("Current index: " + state.currentMessageIndex);
 };
-
+ */
 export const GET_NEXT_MESSAGE = 'GET_NEXT_MESSAGE';
+/*
 export const MsgReducer = () => useReducer(MessageReducer, initialState);
+ */
