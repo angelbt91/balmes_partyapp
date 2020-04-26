@@ -18,7 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/postmessage', 'MessagesController@PostMessage');
-Route::get('/getmessages', 'MessagesController@GetMessages');
-Route::put('/updatemessage', 'MessagesController@UpdateMessage');
+Route::post('/messages', 'MessagesController@PostMessage');
+Route::get('/messages', 'MessagesController@GetAllMessages');
+Route::post('/messages/next', 'MessagesController@GetNextMessage'); // should be GET, but we need to receive params in the body
+Route::put('/messages', 'MessagesController@UpdateMessage');
 Route::post('/testpusher', 'MessagesController@TestBroadcast');

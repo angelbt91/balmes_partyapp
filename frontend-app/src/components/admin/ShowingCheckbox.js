@@ -18,7 +18,7 @@ function ShowingCheckbox(props) {
             // auto-invoked function
             (async function ()  {
 
-                const url = "http://127.0.0.1/api/updatemessage";
+                const url = "http://127.0.0.1/api/messages";
                 const data = {
                     "id": props.id,
                     "showing": checked

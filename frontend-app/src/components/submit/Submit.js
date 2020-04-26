@@ -126,7 +126,7 @@ function Submit() {
     const uploadMessage = async () => {
 
         // subida del mensaje
-        const url = 'http://127.0.0.1/api/postmessage';
+        const url = 'http://127.0.0.1/api/messages';
         const options = {
             method: 'POST',
             body: JSON.stringify(data),

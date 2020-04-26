@@ -71,7 +71,7 @@ class MessagesController extends Controller
     }
 
 
-    public function GetMessages()
+    public function GetAllMessages()
     {
         $messages = MessageModel::all();
         return response()->json($messages);

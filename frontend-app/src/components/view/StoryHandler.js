@@ -23,7 +23,7 @@ function StoryHandler() {
 
         setGetNextMessage(false);
 
-        const url = 'http://127.0.0.1/api/getmessages';
+        const url = 'http://127.0.0.1/api/messages';
         const options = {
             method: 'GET',
             headers: new Headers({
