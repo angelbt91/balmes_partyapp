@@ -86,7 +86,7 @@ function Submit() {
     const publishImage = async () => {
 
         // bases para hacer el fetch
-        const url = 'http://127.0.0.1/api/profilepicture';
+        const url = 'https://api.cloudinary.com/v1_1/themrangel/auto/upload';
         const imageData = {
             "image": data.image,
             "upload_preset": "iqxfcs3m"
@@ -111,13 +111,13 @@ function Submit() {
                 }
             })
             .then(response => {
-                data.image = response["eager"][0]["url"];
+                data.image = response.url;
                 uploadMessage();
             })
             .catch(error => {
                 toast.error('Image could not be uploaded. Please retry.', toastOptions);
                 setDisabled(false);
-                console.log("Error al publicar imagen. Error número " + error.status + ". Contenido de la request: \n" + options.body);
+                console.log("Error al publicar imagen.\n\nError:\n" + error + "\n\nContenido de la request:\n" + options.body);
                 return Promise.reject(error.status);
             });
     };
