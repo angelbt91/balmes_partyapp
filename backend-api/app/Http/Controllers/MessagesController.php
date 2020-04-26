@@ -66,7 +66,7 @@ class MessagesController extends Controller
             );
         }
 
-                return response()->json($response);
+        return response()->json($response);
 
     }
 
@@ -77,35 +77,62 @@ class MessagesController extends Controller
         return response()->json($messages);
     }
 
-    public function GetNextMessage(Request $request) {
+    public function GetNextMessage(Request $request)
+    {
 
-        $request = $request->all();
+        $data = $request->all();
+        $alreadySeenMessages = $data["alreadySeenMessages"];
+        $currentMessageIndex = $data["currentMessageIndex"];
 
         $allMessages = MessageModel::all();
+        $allMessages = $allMessages->all(); // to mutate the result to an actual array
 
-        $visibleMessages = [];
-
-        foreach ($allMessages as $message) {
-            if ($message["showing"] === 1) {
-                array_push($visibleMessages,$message);
+        $visibleMessages = array_filter(
+            $allMessages,
+            function ($message) {
+                return $message["showing"] === 1;
             }
-        }
+        );
+
+        $visibleMessages = array_values($visibleMessages); // to mutate the result to an actual array
 
         if (count($visibleMessages) === 0) {
-            // si está vacío, devolveremos esto
             $response = array(
                 'status' => 'Ok',
                 'code' => '200',
-                'message' => 'No hay mensajes, o no hay ninguno visible.',
+                'message' => 'There aren\'t any messages, or any visible message.',
                 'data' => []
             );
             return response()->json($response, 200);
         }
 
+        $unviewedMessages = array_filter(
+            $visibleMessages,
+            function ($message) use ($alreadySeenMessages) {
+                return !in_array($message["id"], $alreadySeenMessages);
+            }
+        );
+
+        $unviewedMessages = array_values($unviewedMessages); // to mutate the result to an actual array
+
+        if (count($unviewedMessages) === 0) {
+            if ($currentMessageIndex + 1 > count($visibleMessages) - 1) {
+                $nextMessageIndex = 0; // last message reached, back to the first message
+            } else {
+                $nextMessageIndex = $currentMessageIndex + 1;
+            }
+
+            $nextMessage = $visibleMessages[$nextMessageIndex];
+        } else {
+            $nextMessage = $unviewedMessages[0];
+        }
+
+        return response()->json($nextMessage, 200);
 
     }
 
-    public function UpdateMessage(Request $request) {
+    public function UpdateMessage(Request $request)
+    {
 
         $request = $request->all();
 
@@ -113,7 +140,7 @@ class MessagesController extends Controller
         if (!empty($request)) {
             // validamos que el ID sea numérico
             $request_validated = \Validator::make($request, [
-               'id' => 'numeric'
+                'id' => 'numeric'
             ]);
 
             // si la validacion falla, devolveremos un error
@@ -157,7 +184,8 @@ class MessagesController extends Controller
 
     }
 
-    public function TestBroadcast() {
+    public function TestBroadcast()
+    {
         // triggeamos evento para notificar al front-end
         event(new MyEvent("BDD actualizada"));
     }
