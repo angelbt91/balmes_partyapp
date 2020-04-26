@@ -77,6 +77,33 @@ class MessagesController extends Controller
         return response()->json($messages);
     }
 
+    public function GetNextMessage(Request $request) {
+
+        $request = $request->all();
+
+        $allMessages = MessageModel::all();
+
+        $visibleMessages = [];
+
+        foreach ($allMessages as $message) {
+            if ($message["showing"] === 1) {
+                array_push($visibleMessages,$message);
+            }
+        }
+
+        if (count($visibleMessages) === 0) {
+            // si está vacío, devolveremos esto
+            $response = array(
+                'status' => 'Ok',
+                'code' => '200',
+                'message' => 'No hay mensajes, o no hay ninguno visible.',
+                'data' => []
+            );
+            return response()->json($response, 200);
+        }
+
+
+    }
 
     public function UpdateMessage(Request $request) {
 
