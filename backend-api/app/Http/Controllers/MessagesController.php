@@ -114,20 +114,26 @@ class MessagesController extends Controller
         );
 
         $unviewedMessages = array_values($unviewedMessages); // to mutate the result to an actual array
+        $nextMessageIndex = $currentMessageIndex + 1;
 
         if (count($unviewedMessages) === 0) {
-            if ($currentMessageIndex + 1 > count($visibleMessages) - 1) {
+            if ($nextMessageIndex >= count($visibleMessages)) {
                 $nextMessageIndex = 0; // last message reached, back to the first message
-            } else {
-                $nextMessageIndex = $currentMessageIndex + 1;
             }
 
             $nextMessage = $visibleMessages[$nextMessageIndex];
         } else {
             $nextMessage = $unviewedMessages[0];
+            array_push($alreadySeenMessages, $nextMessage['id']);
         }
 
-        return response()->json($nextMessage, 200);
+        $response = array(
+            "currentMessage" => $nextMessage,
+            "currentMessageIndex" => $nextMessageIndex,
+            "alreadySeenMessages" => $alreadySeenMessages
+        );
+
+        return response()->json($response, 200);
 
     }
 
