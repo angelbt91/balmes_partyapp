@@ -23,13 +23,20 @@ function StoryHandler() {
 
         setGetNextMessage(false);
 
-        const url = 'http://127.0.0.1/api/getmessages';
+        const body = {
+            "alreadySeenMessages": state.alreadySeenMessages,
+            "currentMessageIndex": state.currentMessageIndex
+        }
+
+        const url = 'http://127.0.0.1/api/messages/next';
+
         const options = {
-            method: 'GET',
+            method: 'POST',
+            body: JSON.stringify(body),
             headers: new Headers({
                 Accept: 'application/json',
                 'Content-type': 'application/json',
-                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Headers': 'Content-Type'
             }),
             mode: 'cors'
         };
@@ -42,36 +49,8 @@ function StoryHandler() {
                     return Promise.reject(response.status);
                 }
             })
-            .then(messages => {
-                if (allMessagesAreHidden(messages)) {
-                    console.log("No hay ningún mensaje con showing === 1 en la array.");
-                    return null;
-                }
-
-                messages = excludeHiddenMessages(messages);
-
-                let newState = {...state};
-                if (thereAreUnviewedMessages(messages, newState.alreadySeenMessages)) {
-                    newState.currentMessage = getFirstUnviewedMessage(messages, newState.alreadySeenMessages);
-                    newState.currentMessage.storyType = getStoryType(newState.currentMessage);
-
-                    newState.alreadySeenMessages.push(newState.currentMessage.id);
-
-                    logMessage(newState, true);
-                } else {
-                    newState.currentMessageIndex++;
-
-                    if (newState.currentMessageIndex >= messages.length || newState.currentMessageIndex < 0) {
-                        newState.currentMessageIndex = 0;
-                    }
-
-                    newState.currentMessage = messages[newState.currentMessageIndex];
-                    newState.currentMessage.storyType = getStoryType(newState.currentMessage);
-
-                    logMessage(newState, false);
-                }
-
-                setState(newState);
+            .then(message => {
+                setState(message);
                 return setGetNextMessage(false);
             })
             .catch(error => {
@@ -79,93 +58,8 @@ function StoryHandler() {
                 setGetNextMessage(false);
                 return error;
             });
+
     }, [getNextMessage]);
-
-    /***************** UTILITIES ********************/
-
-    const allMessagesAreHidden = (messages) => {
-        messages = messages.filter(message => message.showing === 1);
-        return messages.length === 0;
-    };
-
-    const excludeHiddenMessages = (messages) => {
-        messages = messages.filter(message => message.showing === 1);
-
-        return messages;
-    };
-
-    const thereAreUnviewedMessages = (messages, alreadySeenMessages) => {
-        let unviewedMessages = messages.filter(message => {
-            for (let i = 0; i < alreadySeenMessages.length; i++) {
-                if (message.id === alreadySeenMessages[i]) {
-                    return false;
-                }
-            }
-            return true;
-        });
-
-        return unviewedMessages.length > 0;
-    };
-
-    const getFirstUnviewedMessage = (messages, alreadySeenMessages) => {
-        let unviewedMessages = messages.filter(message => {
-            for (let i = 0; i < alreadySeenMessages.length; i++) {
-                if (message.id === alreadySeenMessages[i]) {
-                    return false;
-                }
-            }
-            return true;
-        });
-
-        return unviewedMessages[0];
-    };
-
-    const getStoryType = (story) => {
-
-        let storyType;
-
-        if (story === undefined) {
-            storyType = undefined;
-            return storyType;
-        }
-
-        if (!story.image) {
-            storyType = 1; // solo mensaje
-        } else {
-            let image = document.createElement('img');
-            image.src = story.image;
-
-            if (image.naturalWidth > image.naturalHeight && !story.message) {
-                storyType = 2; // más ancha que alta, sin mensaje
-            } else if (image.naturalWidth <= image.naturalHeight && !story.message) {
-                storyType = 3; // cuadrada o más alta que ancha, sin mensaje
-            } else if (image.naturalWidth > image.naturalHeight && story.message != null) {
-                storyType = 4; // más ancha que alta, sin mensaje
-            } else if (image.naturalWidth <= image.naturalHeight && story.message != null) {
-                storyType = 5; // // cuadrada o más alta que ancha, con mensaje
-            } else {
-                console.log("Por algún motivo, el mensaje a enseñar no encaja en ningún tipo de story.");
-                storyType = undefined;
-            }
-        }
-
-        return storyType;
-
-    };
-
-    const logMessage = (state, isNew) => {
-        if (isNew) {
-            console.log("%cMostramos un mensaje nuevo:", "font-weight: 900; background-color: green;");
-        } else {
-            console.log("%cMostramos un mensaje no nuevo:", "font-weight: 900; background-color: blue; color: white;");
-        }
-        console.log(state.currentMessage);
-        console.log("Mensajes ya vistos:");
-        console.log(state.alreadySeenMessages);
-        console.log("Current index: " + state.currentMessageIndex);
-    };
-
-    /***************** UTILITIES ********************/
 
     return (
         <div>

@@ -66,19 +66,110 @@ class MessagesController extends Controller
             );
         }
 
-                return response()->json($response);
+        return response()->json($response);
 
     }
 
-
-    public function GetMessages()
+    public function GetAllMessages()
     {
         $messages = MessageModel::all();
         return response()->json($messages);
     }
 
+    public function GetNextMessage(Request $request)
+    {
 
-    public function UpdateMessage(Request $request) {
+        $data = $request->all();
+        $alreadySeenMessages = $data["alreadySeenMessages"];
+        $currentMessageIndex = $data["currentMessageIndex"];
+
+        $allMessages = MessageModel::all();
+        $allMessages = $allMessages->all(); // to mutate the result to an actual array
+
+        $visibleMessages = array_filter(
+            $allMessages,
+            function ($message) {
+                return $message["showing"] === 1;
+            }
+        );
+        $visibleMessages = array_values($visibleMessages); // to mutate the result to an actual array
+
+        if (count($visibleMessages) === 0) {
+            $response = array(
+                'status' => 'Ok',
+                'code' => '200',
+                'message' => 'There aren\'t any messages, or any visible message.',
+                'data' => []
+            );
+            return response()->json($response, 200);
+        }
+
+        $unviewedMessages = array_filter(
+            $visibleMessages,
+            function ($message) use ($alreadySeenMessages) {
+                return !in_array($message["id"], $alreadySeenMessages);
+            }
+        );
+        $unviewedMessages = array_values($unviewedMessages); // to mutate the result to an actual array
+
+        $nextMessageIndex = $currentMessageIndex + 1;
+
+        if (count($unviewedMessages) === 0) {
+            if ($nextMessageIndex >= count($visibleMessages)) {
+                $nextMessageIndex = 0; // last message reached, back to the first message
+            }
+
+            $nextMessage = $visibleMessages[$nextMessageIndex];
+        } else {
+            $nextMessage = $unviewedMessages[0];
+            array_push($alreadySeenMessages, $nextMessage['id']);
+        }
+
+        $nextMessage['storyType'] = $this->GetStoryType($nextMessage);
+
+        $response = array(
+            "currentMessage" => $nextMessage,
+            "currentMessageIndex" => $nextMessageIndex,
+            "alreadySeenMessages" => $alreadySeenMessages
+        );
+
+        return response()->json($response, 200);
+
+    }
+
+    private function GetStoryType($story)
+    {
+
+        /*
+         * 1: Only text
+         * 2: Wider than tall. No text
+         * 3: Square, or taller than wide. No text
+         * 4: Wider than tall. With text
+         * 5: Square, or taller than wide. With text
+         */
+
+        if (empty($story['image'])) {
+            return 1;
+        }
+
+        list($width, $height) = getimagesize($story['image']);
+
+        if ($width > $height && empty($story['message'])) {
+            return 2;
+        } else if ($width <= $height && empty($story['message'])) {
+            return 3;
+        } else if ($width > $height && !empty($story['message'])) {
+            return 4;
+        } else if ($width <= $height && !empty($story['message'])) {
+            return 5;
+        } else {
+            return "undefined";
+        }
+
+    }
+
+    public function UpdateMessage(Request $request)
+    {
 
         $request = $request->all();
 
@@ -86,7 +177,7 @@ class MessagesController extends Controller
         if (!empty($request)) {
             // validamos que el ID sea numérico
             $request_validated = \Validator::make($request, [
-               'id' => 'numeric'
+                'id' => 'numeric'
             ]);
 
             // si la validacion falla, devolveremos un error
@@ -130,7 +221,8 @@ class MessagesController extends Controller
 
     }
 
-    public function TestBroadcast() {
+    public function TestBroadcast()
+    {
         // triggeamos evento para notificar al front-end
         event(new MyEvent("BDD actualizada"));
     }
