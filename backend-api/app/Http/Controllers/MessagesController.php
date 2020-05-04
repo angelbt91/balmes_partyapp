@@ -70,7 +70,6 @@ class MessagesController extends Controller
 
     }
 
-
     public function GetAllMessages()
     {
         $messages = MessageModel::all();
@@ -93,7 +92,6 @@ class MessagesController extends Controller
                 return $message["showing"] === 1;
             }
         );
-
         $visibleMessages = array_values($visibleMessages); // to mutate the result to an actual array
 
         if (count($visibleMessages) === 0) {
@@ -112,8 +110,8 @@ class MessagesController extends Controller
                 return !in_array($message["id"], $alreadySeenMessages);
             }
         );
-
         $unviewedMessages = array_values($unviewedMessages); // to mutate the result to an actual array
+
         $nextMessageIndex = $currentMessageIndex + 1;
 
         if (count($unviewedMessages) === 0) {
@@ -127,6 +125,8 @@ class MessagesController extends Controller
             array_push($alreadySeenMessages, $nextMessage['id']);
         }
 
+        $nextMessage['storyType'] = $this->GetStoryType($nextMessage);
+
         $response = array(
             "currentMessage" => $nextMessage,
             "currentMessageIndex" => $nextMessageIndex,
@@ -134,6 +134,37 @@ class MessagesController extends Controller
         );
 
         return response()->json($response, 200);
+
+    }
+
+    private function GetStoryType($story)
+    {
+
+        /*
+         * 1: Only text
+         * 2: Wider than tall. No text
+         * 3: Square, or taller than wide. No text
+         * 4: Wider than tall. With text
+         * 5: Square, or taller than wide. With text
+         */
+
+        if (empty($story['image'])) {
+            return 1;
+        }
+
+        list($width, $height) = getimagesize($story['image']);
+
+        if ($width > $height && empty($story['message'])) {
+            return 2;
+        } else if ($width <= $height && empty($story['message'])) {
+            return 3;
+        } else if ($width > $height && !empty($story['message'])) {
+            return 4;
+        } else if ($width <= $height && !empty($story['message'])) {
+            return 5;
+        } else {
+            return "undefined";
+        }
 
     }
 
