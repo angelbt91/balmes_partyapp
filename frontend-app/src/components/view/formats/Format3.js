@@ -23,7 +23,7 @@ export default function Format5(props) {
     return (
         <div className="container">
             <div className="row">
-                <div className="col">
+                <div className="col d-flex justify-content-center">
                     <Stories
                         stories={stories}
                         defaultInterval={4000}
@@ -31,9 +31,6 @@ export default function Format5(props) {
                         height={850}
                         onStoryEnd={props.ChooseNewMessage}
                     />
-                </div>
-                <div className="col d-flex align-items-center">
-                    <p style={{"fontSize": "48px"}}>{message.message}</p>
                 </div>
             </div>
         </div>

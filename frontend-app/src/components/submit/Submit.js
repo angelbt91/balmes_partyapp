@@ -88,11 +88,11 @@ function Submit() {
         // bases para hacer el fetch
         const url = 'https://api.cloudinary.com/v1_1/themrangel/auto/upload';
         const imageData = {
-            "image": data.image,
+            "file": data.image,
             "upload_preset": "iqxfcs3m"
         };
         const options = {
-            method: 'PUT',
+            method: 'POST',
             body: JSON.stringify(imageData),
             headers: new Headers({
                 Accept: 'application/json',

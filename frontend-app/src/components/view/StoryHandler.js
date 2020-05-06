@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import Format3 from "./formats/Format3"
 import Format5 from "./formats/Format5";
 
 function StoryHandler() {
@@ -78,8 +79,9 @@ function StoryHandler() {
                     :
                     state.currentMessage.storyType === 3 ?
                         <>
-                            <p>Name: {state.currentMessage.name}</p>
-                            <p>Message: {state.currentMessage.message}</p>
+                            <Format3 ChooseNewMessage={() => {
+                                setGetNextMessage(true)
+                            }} message={state.currentMessage}/>
                         </>
                         :
                         state.currentMessage.storyType === 4 ?
