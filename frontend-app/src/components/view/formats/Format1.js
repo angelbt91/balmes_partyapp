@@ -7,7 +7,6 @@ export default function Format5(props) {
         console.log("Aún no hay props que pintar");
         return (null);
     }
-
     let message = props.message;
 
     return (

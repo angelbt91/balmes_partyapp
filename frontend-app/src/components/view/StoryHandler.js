@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Format1 from "./formats/Format1";
+import Format2 from "./formats/Format2";
 import Format3 from "./formats/Format3";
 import Format4 from "./formats/Format4";
 import Format5 from "./formats/Format5";
@@ -10,7 +11,7 @@ function StoryHandler() {
         currentMessage: {
             name: "Loading messages...",
             message: "Loading messages...",
-            storyType: 1
+            storyType: 0
         },
         currentMessageIndex: -1,
         alreadySeenMessages: []
@@ -54,7 +55,18 @@ function StoryHandler() {
             })
             .then(message => {
                 setState(message);
+
+                // hack to loop over a storyType of 1
+                // todo: look for a more elegant solution
+                if (message.currentMessage.storyType === 1) {
+                    return setTimeout(() => {
+                        console.log("Ejecutamos");
+                        setGetNextMessage(true);
+                    }, 6000);
+                }
+
                 return setGetNextMessage(false);
+
             })
             .catch(error => {
                 console.log("Error ", error);
@@ -72,11 +84,10 @@ function StoryHandler() {
                     setGetNextMessage(true)
                 }} message={state.currentMessage}/>
                 :
-                initialState.currentMessage.storyType === 2 ?
-                    <>
-                        <p>Name: {state.currentMessage.name}</p>
-                        <p>Message: {state.currentMessage.message}</p>
-                    </>
+                state.currentMessage.storyType === 2 ?
+                    <Format2 ChooseNewMessage={() => {
+                        setGetNextMessage(true)
+                    }} message={state.currentMessage}/>
                     :
                     state.currentMessage.storyType === 3 ?
                         <Format3 ChooseNewMessage={() => {
