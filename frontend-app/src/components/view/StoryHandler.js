@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import Format1 from "./formats/Format1"
 import Format3 from "./formats/Format3"
 import Format5 from "./formats/Format5";
 
@@ -63,12 +64,13 @@ function StoryHandler() {
     }, [getNextMessage]);
 
     return (
-        <div>
+        <div style={{"height": "100%"}}>
             <button onClick={e => setGetNextMessage(true)}>Otro</button>
             {state.currentMessage.storyType === 1 ?
                 <>
-                    <p>Name: {state.currentMessage.name}</p>
-                    <p>Message: {state.currentMessage.message}</p>
+                    <Format1 ChooseNewMessage={() => {
+                        setGetNextMessage(true)
+                    }} message={state.currentMessage}/>
                 </>
                 :
                 initialState.currentMessage.storyType === 2 ?
