@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import Format1 from "./formats/Format1"
-import Format3 from "./formats/Format3"
+import Format1 from "./formats/Format1";
+import Format3 from "./formats/Format3";
+import Format4 from "./formats/Format4";
 import Format5 from "./formats/Format5";
 
 function StoryHandler() {
@@ -67,11 +68,9 @@ function StoryHandler() {
         <div style={{"height": "100%"}}>
             <button onClick={e => setGetNextMessage(true)}>Otro</button>
             {state.currentMessage.storyType === 1 ?
-                <>
-                    <Format1 ChooseNewMessage={() => {
-                        setGetNextMessage(true)
-                    }} message={state.currentMessage}/>
-                </>
+                <Format1 ChooseNewMessage={() => {
+                    setGetNextMessage(true)
+                }} message={state.currentMessage}/>
                 :
                 initialState.currentMessage.storyType === 2 ?
                     <>
@@ -80,24 +79,19 @@ function StoryHandler() {
                     </>
                     :
                     state.currentMessage.storyType === 3 ?
-                        <>
-                            <Format3 ChooseNewMessage={() => {
-                                setGetNextMessage(true)
-                            }} message={state.currentMessage}/>
-                        </>
+                        <Format3 ChooseNewMessage={() => {
+                            setGetNextMessage(true)
+                        }} message={state.currentMessage}/>
                         :
                         state.currentMessage.storyType === 4 ?
-                            <>
-                                <p>Name: {state.currentMessage.name}</p>
-                                <p>Message: {state.currentMessage.message}</p>
-                            </>
+                            <Format4 ChooseNewMessage={() => {
+                                setGetNextMessage(true)
+                            }} message={state.currentMessage}/>
                             :
                             state.currentMessage.storyType === 5 ?
-                                <>
-                                    <Format5 ChooseNewMessage={() => {
-                                        setGetNextMessage(true)
-                                    }} message={state.currentMessage}/>
-                                </>
+                                <Format5 ChooseNewMessage={() => {
+                                    setGetNextMessage(true)
+                                }} message={state.currentMessage}/>
                                 :
                                 <p>Cargando...</p>
             }
