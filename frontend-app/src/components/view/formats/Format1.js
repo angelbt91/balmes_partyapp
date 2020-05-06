@@ -12,11 +12,9 @@ export default function Format5(props) {
 
     return (
         <div className="container" style={{"height": "100%"}}>
-            <div className="row" style={{"height": "100%"}}>
+            <div className="row d-flex justify-content-center flex-column" style={{"height": "100%"}}>
                 <p>{message.name} {message.created_at}</p>
-                <div className="col d-flex align-items-center justify-content-center" style={{"height": "8  0%"}}>
-                    <p style={{"fontSize": "48px"}}>{message.message}</p>
-                </div>
+                <p style={{"fontSize": "48px"}}>{message.message}</p>
             </div>
         </div>
 
