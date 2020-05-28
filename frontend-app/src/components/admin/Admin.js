@@ -1,17 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import '../bootstrap.min.css';
-import './admin.css';
-import Fab from '@material-ui/core/Fab';
-import CachedIcon from '@material-ui/icons/Cached';
 import MessagesTable from "./MessagesTable";
 import {ToastContainer} from "react-toastify";
+import Fab from '@material-ui/core/Fab';
+import CachedIcon from '@material-ui/icons/Cached';
+import '../bootstrap.min.css';
+import './admin.css';
 
 function Admin() {
-
-    const [messagesArray, setMessagesArray] = useState([]);
+    const [messages, setMessages] = useState([]);
 
     const fetchMessages = () => {
-
         const url = 'http://127.0.0.1/api/messages';
         const options = {
             method: 'GET',
@@ -31,9 +29,8 @@ function Admin() {
                     return Promise.reject(response.status);
                 }
             }).then((response) => {
-                setMessagesArray(response);
+            setMessages(response);
         });
-
     };
 
     useEffect(() => {
@@ -60,12 +57,14 @@ function Admin() {
                 </Fab>
             </div>
             <div className="row mt-3">
-                { messagesArray === []
-                    ? <p>Click on the button above to load the messages!</p>
-                    : <MessagesTable props={messagesArray}/>
+                {
+                    messages === [] ?
+                        <p>Loading messages...</p> :
+                        <MessagesTable messages={messages}/>
                 }
             </div>
         </div>
     )
 }
+
 export default Admin;

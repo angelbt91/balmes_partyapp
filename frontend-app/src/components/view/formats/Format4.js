@@ -2,7 +2,7 @@ import React from 'react';
 import Stories from 'react-insta-stories';
 import '../../bootstrap.min.css'
 import moment from "moment";
-import convertToSpanishTimeZone from "../convertTimeZone";
+import convertToSpanishTimeZone from "../../../helpers/convertTimeZone";
 
 export default function Format5(props) {
 

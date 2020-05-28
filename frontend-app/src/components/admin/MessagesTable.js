@@ -1,16 +1,17 @@
 import React from 'react';
+import ShowingCheckbox from "./ShowingCheckbox";
+import MessageMedia from "./MessageMedia";
 import Paper from "@material-ui/core/Paper";
 import Table from '@material-ui/core/Table';
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
-import ShowingCheckbox from "./ShowingCheckbox";
-import MessageMedia from "./MessageMedia";
 
 function MessagesTable(props) {
+    const messages = props.messages;
 
-    const rows = props.props.map((row, index) => {
+    const rows = messages.map((row, index) => {
         return (
             <TableRow key={index}>
                 <TableCell>{row.id}</TableCell>

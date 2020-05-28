@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../bootstrap.min.css';
-import convertToSpanishTimeZone from "../convertTimeZone";
+import convertToSpanishTimeZone from "../../../helpers/convertTimeZone";
 import moment from "moment";
 
 export default function Format5(props) {
