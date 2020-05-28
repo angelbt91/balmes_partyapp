@@ -1,6 +1,8 @@
 import React from 'react';
 import Stories from 'react-insta-stories';
 import '../../bootstrap.min.css'
+import moment from "moment";
+import convertToSpanishTimeZone from "../convertTimeZone";
 
 export default function Format5(props) {
 
@@ -14,7 +16,7 @@ export default function Format5(props) {
     const stories = [{
         header: {
             heading: message.name,
-            subheading: message.created_at,
+            subheading: moment(convertToSpanishTimeZone(message.created_at)).fromNow(),
             profileImage: 'https://picsum.photos/1080/1920'
         },
         url: message.image
